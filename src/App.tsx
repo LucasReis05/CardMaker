@@ -3,7 +3,7 @@ import { useState } from 'react'
 import BaralhoTela from './BaralhoTela.tsx'
 import Mesa from './Mesa.tsx'
 import Editor from './Editor.tsx'
-import type { Cartas, Elemento, Baralho } from './Componentes/interfaces.tsx'
+import type { Cartas, Elemento, Baralho } from './Componentes/Types.tsx'
 
 const novoElemento = (tipo: 'texto' | 'imagem'): Elemento => ({
   id: Date.now(),

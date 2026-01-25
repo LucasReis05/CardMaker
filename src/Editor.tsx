@@ -1,11 +1,11 @@
 //Mostra a Carta a ser editada, utiliza o EditorPainel para isso
 import Carta from "./Componentes/Carta";
-import type { Elemento } from "./Componentes/interfaces";
+import type { Elemento } from "./Componentes/Types";
 import EditorPanel from "./Componentes/EditorPainel";
 import EditorOpcoes from "./Componentes/EditorOpcoes";
 
 
-export interface EditorProps {
+export type EditorProps = {
     onDefineTela: (tela: 'mesa' | 'editor') => void;
     elementosAtuais: Elemento[];
     idSelecionado?: number | null;

@@ -1,8 +1,7 @@
-import type { Elemento } from "./interfaces.tsx";
+import type { Elemento } from "./Types.tsx";
 import type { ChangeEvent } from "react";   
 
-interface EditorInputsProps
-{
+type EditorInputsProps = {
     elemento: Elemento;
     onAlterarElemento: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
     onApagarElemento: (id: number) => void;

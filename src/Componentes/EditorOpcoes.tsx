@@ -1,7 +1,6 @@
 import '../Estilos/EditorOpcoes.css';
 
-interface EditorOpcoesProps
-{
+type EditorOpcoesProps = {
     cartaId: number| null;
     salvarCarta: () =>void;
     apagarCarta: () =>void;

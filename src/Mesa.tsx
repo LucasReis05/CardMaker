@@ -1,8 +1,8 @@
 //tela inicial onde são mostradas todas as cartas, se houver, no baralho. Ao selecionar alguma, muda para a tela do editor
-import type {Baralho, Cartas} from './Componentes/interfaces.tsx';
+import type {Baralho, Cartas} from './Componentes/Types.tsx';
 import Carta from './Componentes/Carta.tsx';
 
-interface MesaProps {
+type MesaProps = {
     cartasSalvas: Cartas[];
     onNovaCarta: () => void;
     onEditarCarta: (carta: Cartas) => void;

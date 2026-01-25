@@ -1,10 +1,10 @@
 import type { ChangeEvent} from 'react';
 import { useState } from 'react';
-import type { Elemento } from './interfaces.tsx';
+import type { Elemento } from './Types.tsx';
 import EditorInputs from './EditorInputs.tsx';
 import '../Estilos/EditorPainel.css';
 
-interface EditorPanelProps {
+type EditorPanelProps = {
   elementoAtivo?: Elemento;
   onAtualizaElemento: (id: number, chave: string, valor: string | number) => void;
   onAddElemento: (tipo: 'texto' | 'imagem') => void;

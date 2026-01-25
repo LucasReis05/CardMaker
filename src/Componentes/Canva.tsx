@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
-import type { Elemento } from "./interfaces.tsx";
+import type { Elemento } from "./Types.tsx";
 
-interface CanvaProps {
+type CanvaProps = {
     elementos: Elemento[];
     onSelecionar: (id: number) => void;
 }

@@ -1,13 +1,13 @@
 import { useState } from "react";
-import type { Baralho } from "./Componentes/interfaces";
+import type { Baralho } from "./Componentes/Types";
 
-interface Props {
+type BaralhoProps = {
   baralhos: Baralho[];
   onCriarBaralho: (nome: string) => void;
   onAbrirBaralho: (b: Baralho) => void;
 }
 
-export default function BaralhoTela({ baralhos, onCriarBaralho, onAbrirBaralho }: Props) {
+export default function BaralhoTela({ baralhos, onCriarBaralho, onAbrirBaralho }: BaralhoProps) {
   const [nomeDigitado, setNomeDigitado] = useState("");
 
   const confirmarCriacao = () => {

@@ -1,9 +1,9 @@
 import Canva from "./Canva";
 import "../Estilos/Carta.css";
-import type { Elemento } from "./interfaces";
+import type { Elemento } from "./Types";
 import type {CSSProperties } from "react";
 
-interface CartaComponenteProps {
+type CartaComponenteProps = {
     elementos: Elemento[];
     onSelecionarElemento: (id:number)=>void;
     cor: string;

@@ -1,4 +1,4 @@
-export interface Elemento {
+export type Elemento =  {
     id:number;
     tipo: 'texto' | 'imagem';
     posicaoVertical:number,
@@ -12,13 +12,13 @@ export interface Elemento {
     estiloFonte: 'normal' | 'italic';
 }
 
-export interface Cartas{
+export type Cartas = {
     id: number;
     dados: Elemento[];
     cor: string;
 }
 
-export interface Baralho {
+export type Baralho = {
     id: number;
     nome: string;
     cartas: Cartas[];
