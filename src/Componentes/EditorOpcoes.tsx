@@ -8,6 +8,7 @@ type EditorOpcoesProps = {
 }
 export default function EditorOpcoes({cartaId, salvarCarta, apagarCarta, duplicarCarta}: EditorOpcoesProps)
 {
+
     return (
         <div className="editor-opcoes">
             {cartaId === null ? (<button className='salvar-btn' onClick={salvarCarta}>💾 Salvar Carta</button>): (<button onClick={salvarCarta} className='salvar-btn' >🗃️ Salvar Alteração</button>)}

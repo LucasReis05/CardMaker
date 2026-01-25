@@ -28,7 +28,7 @@ export default function Mesa({cartasSalvas, onNovaCarta, onEditarCarta, onVoltar
                     key={c.id} 
                     className="cartaInicial" 
                     onClick={() => onEditarCarta(c)}
-                >
+                ><p>{c.nome}</p>
 
                 <div className="cartaMiniatura">
 

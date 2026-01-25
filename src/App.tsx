@@ -38,7 +38,7 @@ type AppActions =
   | { type: "ATUALIZAR_COR"; cor: string }
   | { type: "NOVA_CARTA" }
   | { type: "EDITAR_CARTA"; carta: Cartas }
-  | { type: "SALVAR_CARTA" }
+  | { type: "SALVAR_CARTA"; nome: string }
   | { type: "APAGAR_CARTA" }
   | { type: "DUPLICAR_CARTA" }
   | { type: "ADICIONAR_ELEMENTO"; tipo: "texto" | "imagem" }
@@ -132,13 +132,14 @@ const reducer = (state: AppState, action: AppActions): AppState => {
       if (state.cartaIdAtual) {
         const cartasAtualizadas = state.cartasSalvas.map((carta) =>
           carta.id === state.cartaIdAtual
-            ? { ...carta, dados: state.elementos, cor: state.corAtual }
+            ? { ...carta, nome: action.nome, dados: state.elementos, cor: state.corAtual }
             : carta,
         );
         return { ...state, cartasSalvas: cartasAtualizadas, tela: "mesa" };
       }
       const novaCarta: Cartas = {
         id: Date.now(),
+        nome: action.nome,
         dados: state.elementos,
         cor: state.corAtual,
       };
@@ -228,8 +229,8 @@ function App() {
   const modificarElemento = (id: number, chave: string, valor: string | number) => {
     dispatch({ type: "MODIFICAR_ELEMENTO", id, chave, valor });
   }
-  const salvarCarta = () => {
-    dispatch({ type: "SALVAR_CARTA" });
+  const salvarCarta = (nome: string) => {
+    dispatch({ type: "SALVAR_CARTA", nome });
   };
   const duplicarCarta = () => {
     dispatch({ type: "DUPLICAR_CARTA" });
