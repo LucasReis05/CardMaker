@@ -85,9 +85,16 @@ const reducer = (state: AppState, action: AppActions): AppState => {
       };
     case "SALVAR_BARALHO": {
       if (!state.baralhoAtual) return state;
-      state.baralhosSalvos = [...state.baralhosSalvos, state.baralhoAtual];
+      const baralhoAtualizado = {
+        ...state.baralhoAtual,
+        cartas: state.cartasSalvas,
+      };
       return {
         ...state,
+        baralhoAtual: baralhoAtualizado,
+        baralhosSalvos: state.baralhosSalvos.map(item =>
+          item.id === state.baralhoAtual!.id ? baralhoAtualizado : item
+        ),
       };
     }
     case "SELECIONAR_ELEMENTO":
@@ -184,97 +191,51 @@ const reducer = (state: AppState, action: AppActions): AppState => {
 function App() {
   const [state, dispatch] = useReducer(reducer, estadoInicial);
 
+  const defineTela = (tela: "baralho" | "mesa" | "editor") => {
+    dispatch({ type: "DEFINIR_TELA", tela });
+  }
+
   const criarBaralho = (nome: string) => {
-    const novo: Baralho = {
-      id: Date.now(),
-      nome,
-      cartas: [],
-    };
-    defineBaralhosSalvos((prev) => [...prev, novo]);
+    dispatch({ type: "CRIAR_BARALHO", nome });
   };
 
   const abrirBaralho = (b: Baralho) => {
-    defineBaralhoAtual(b);
-    defineCartasSalvas(b.cartas);
-    defineTela("mesa");
+    dispatch({ type: "ABRIR_BARALHO", baralho: b});
   };
 
   const salvarBaralho = () => {
-    if (!baralhoAtual) return;
-    baralhoAtual.cartas = cartasSalvas;
-    defineBaralhosSalvos((prev) =>
-      prev.map((item) => (item.id === baralhoAtual.id ? baralhoAtual : item)),
-    );
+    dispatch({ type: "SALVAR_BARALHO" });
   };
 
   const selecionarElemento = (id: number) => {
-    defineIdSelecionado(id);
+    dispatch({ type: "SELECIONAR_ELEMENTO", id });
   };
 
   const atualizarCor = (cor: string) => {
-    defineCorAtual(cor);
+    dispatch({ type: "ATUALIZAR_COR", cor });
   };
   const novaCarta = () => {
-    defineElementos([]);
-    defineCartaIdAtual(null);
-    defineIdSelecionado(null);
-    defineCorAtual("#ffffff");
-    defineTela("editor");
+    dispatch({ type: "NOVA_CARTA" });
   };
 
   const editarCarta = (carta: Cartas) => {
-    defineElementos(carta.dados);
-    defineCartaIdAtual(carta.id);
-    defineCorAtual(carta.cor);
-    defineIdSelecionado(null);
-    defineTela("editor");
-  };
-  const salvarCarta = () => {
-    if (cartaIdAtual) {
-      defineCartasSalvas((prev) =>
-        prev.map((carta) =>
-          carta.id === cartaIdAtual
-            ? { ...carta, dados: elementos, cor: corAtual }
-            : carta,
-        ),
-      );
-    } else {
-      const novaCarta: Cartas = {
-        id: Date.now(),
-        dados: elementos,
-        cor: corAtual,
-      };
-      defineCartasSalvas((prev) => [...prev, novaCarta]);
-    }
-
-    defineTela("mesa");
-  };
-
-  const apagarCarta = () => {
-    if (cartaIdAtual !== null) {
-      defineCartasSalvas((prev) =>
-        prev.filter((carta) => carta.id !== cartaIdAtual),
-      );
-      defineTela("mesa");
-    }
-  };
-
-  const duplicarCarta = () => {
-    dispatch({ type:"DUPLICAR_CARTA"})
+    dispatch({ type: "EDITAR_CARTA", carta });
   };
 
   const adicionarElemento = (tipo: "texto" | "imagem") => {
-    dispatch({ type: "ADICIONAR_ELEMENTO", tipo})
+    dispatch({ type: "ADICIONAR_ELEMENTO", tipo });
   };
-
-  const modificarElemento = (
-    id: number,
-    chave: string,
-    valor: string | number,
-  ) => {
-    defineElementos((prev) =>
-      prev.map((e) => (e.id === id ? { ...e, [chave]: valor } : e)),
-    );
+  const modificarElemento = (id: number, chave: string, valor: string | number) => {
+    dispatch({ type: "MODIFICAR_ELEMENTO", id, chave, valor });
+  }
+  const salvarCarta = () => {
+    dispatch({ type: "SALVAR_CARTA" });
+  };
+  const duplicarCarta = () => {
+    dispatch({ type: "DUPLICAR_CARTA" });
+  }
+  const apagarCarta = () => {
+    dispatch({ type: "APAGAR_CARTA" });
   };
 
   const apagarElemento = (id: number) => {
@@ -287,18 +248,18 @@ function App() {
         <h1 className="titulo">Meu TCG</h1>
       </header>
 
-      {tela === "baralho" && (
+      {state.tela === "baralho" && (
         <BaralhoTela
-          baralhos={baralhosSalvos}
+          baralhos={state.baralhosSalvos}
           onCriarBaralho={criarBaralho}
           onAbrirBaralho={abrirBaralho}
         />
       )}
 
-      {tela === "mesa" && (
+      {state.tela === "mesa" && (
         <Mesa
-          cartasSalvas={cartasSalvas}
-          baralhoAtual={baralhoAtual}
+          cartasSalvas={state.cartasSalvas}
+          baralhoAtual={state.baralhoAtual}
           onNovaCarta={novaCarta}
           onEditarCarta={editarCarta}
           onSalvarBaralho={salvarBaralho}
@@ -306,7 +267,7 @@ function App() {
         />
       )}
 
-      {tela === "editor" && (
+      {state.tela === "editor" && (
         <Editor
           onDefineTela={defineTela}
           onSelecionarElemento={selecionarElemento}
@@ -317,10 +278,10 @@ function App() {
           onDuplicarCarta={duplicarCarta}
           onAtualizarCor={atualizarCor}
           onApagarElemento={apagarElemento}
-          cartaIdAtual={cartaIdAtual}
-          corCarta={corAtual}
-          elementosAtuais={elementos}
-          idSelecionado={idSelecionado}
+          cartaIdAtual={state.cartaIdAtual}
+          corCarta={state.corAtual}
+          elementosAtuais={state.elementos}
+          idSelecionado={state.idSelecionado}
         />
       )}
 
