@@ -14,7 +14,7 @@ export type Elemento =  {
 
 export type Cartas = {
     id: number;
-    nome: string | null;
+    nome: string;
     dados: Elemento[];
     cor: string;
 }

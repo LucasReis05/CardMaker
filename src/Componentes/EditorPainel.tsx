@@ -1,5 +1,5 @@
 import type { ChangeEvent} from 'react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import type { Elemento } from './Types.tsx';
 import EditorInputs from './EditorInputs.tsx';
 import '../Estilos/EditorPainel.css';
@@ -11,12 +11,19 @@ type EditorPanelProps = {
   onApagarElemento: (id: number) => void;
   cor: string;
   onAtualizarCor: (cor: string) => void;
-  nomecarta: React.RefObject<HTMLInputElement>;
+  nomeCartaRef: React.RefObject<string>;
 }
 
 
-export default function EditorPanel({ elementoAtivo, onAtualizaElemento, onAddElemento, onApagarElemento, cor, onAtualizarCor, nomecarta}: EditorPanelProps) {
+export default function EditorPanel({ elementoAtivo, onAtualizaElemento, onAddElemento, onApagarElemento, cor, onAtualizarCor, nomeCartaRef}: EditorPanelProps) {
   const [menuAberto, defineMenuAberto] = useState(false);
+  const nomeCartaInputRef = useRef<HTMLInputElement>(null);
+  
+  const atualizarNomeNoRef = () => {
+    if (nomeCartaInputRef.current) {
+      nomeCartaRef.current = nomeCartaInputRef.current.value;
+    }
+  };
   
   const alterarElemento = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => 
   {
@@ -49,8 +56,8 @@ export default function EditorPanel({ elementoAtivo, onAtualizaElemento, onAddEl
           <div style={{display: 'flex', flexDirection: 'row', gap: ' 10px' }}>
           <p>Cor da Carta:</p> 
           <input style={{display: 'inline'}} type="color" name="corCarta" value={cor} onChange={e => onAtualizarCor(e.target.value)}/>
-          <input type="text" placeholder="Nome da carta" ref={nomecarta} className="input-nome-carta"/>
           </div>
+          <input ref={nomeCartaInputRef} type="text" defaultValue={nomeCartaRef.current} placeholder="Nome da carta" onChange={atualizarNomeNoRef} />
          
         </div>
       )}

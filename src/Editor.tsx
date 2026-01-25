@@ -18,6 +18,7 @@ export type EditorProps = {
     onDuplicarCarta: () => void;
     cartaIdAtual:number | null;
     corCarta: string;
+    cartaNomeAtual: string;
     onAtualizarCor: (cor: string) => void;
     onApagarElemento: (id: number) => void;
 }
@@ -26,13 +27,14 @@ export default function Editor(
     {onDefineTela,elementosAtuais,idSelecionado,onSelecionarElemento,
     onAdicionarElemento, onModificarElemento, onSalvarCarta,
     onApagarCarta, onDuplicarCarta, cartaIdAtual, corCarta,
-    onAtualizarCor, onApagarElemento}:
+    cartaNomeAtual, onAtualizarCor, onApagarElemento}:
     EditorProps) 
     {
-        const nomeCartaRef = useRef<HTMLInputElement | null>(null);
-        const onSalvarCartaComNome = () => { const nome = nomeCartaRef.current?.value || null; console.log("Nome da carta:", nome);
-        onSalvarCarta(nome); };
-
+        const nomeCartaRef = useRef<string>(cartaNomeAtual);
+        
+        const onSalvarCartaComNome = () => {
+            onSalvarCarta(nomeCartaRef.current);
+        };   
 
         const elementoSelecionado = elementosAtuais.find(element => element.id === idSelecionado);
         return(    
@@ -53,7 +55,7 @@ export default function Editor(
                     onApagarElemento={onApagarElemento}
                     cor={corCarta}
                     onAtualizarCor={onAtualizarCor}
-                    nomecarta={nomeCartaRef as React.RefObject<HTMLInputElement>}
+                    nomeCartaRef={nomeCartaRef}
                     />
                     
                 </div>

@@ -25,6 +25,7 @@ type AppState = {
   cartasSalvas: Cartas[];
   corAtual: string;
   cartaIdAtual: number | null;
+  cartaNomeAtual: string;
   elementos: Elemento[];
   idSelecionado: number | null;
 };
@@ -36,7 +37,7 @@ type AppActions =
   | { type: "SALVAR_BARALHO" }
   | { type: "SELECIONAR_ELEMENTO"; id: number }
   | { type: "ATUALIZAR_COR"; cor: string }
-  | { type: "NOVA_CARTA"; nome: string | null }
+  | { type: "NOVA_CARTA"; nome: string}
   | { type: "EDITAR_CARTA"; carta: Cartas }
   | { type: "SALVAR_CARTA"; nome: string }
   | { type: "APAGAR_CARTA" }
@@ -57,6 +58,7 @@ const estadoInicial: AppState = {
   cartasSalvas: [],
   corAtual: "#ffffff",
   cartaIdAtual: null,
+  cartaNomeAtual: '',
   elementos: [],
   idSelecionado: null,
 };
@@ -116,6 +118,7 @@ const reducer = (state: AppState, action: AppActions): AppState => {
         elementos: [],
         cartaIdAtual: null,
         idSelecionado: null,
+        cartaNomeAtual: '',
         corAtual: "#ffffff",
         tela: "editor",
       };
@@ -123,6 +126,7 @@ const reducer = (state: AppState, action: AppActions): AppState => {
       return {
         ...state,
         elementos: action.carta.dados,
+        cartaNomeAtual: action.carta.nome,
         cartaIdAtual: action.carta.id,
         corAtual: action.carta.cor,
         idSelecionado: null,
@@ -216,7 +220,8 @@ function App() {
   const atualizarCor = (cor: string) => {
     dispatch({ type: "ATUALIZAR_COR", cor });
   };
-  const novaCarta = (nome: string | null) => {
+  
+  const novaCarta = (nome: string) => {
     dispatch({ type: "NOVA_CARTA", nome });
   };
 
@@ -284,6 +289,7 @@ function App() {
           corCarta={state.corAtual}
           elementosAtuais={state.elementos}
           idSelecionado={state.idSelecionado}
+          cartaNomeAtual={state.cartaNomeAtual}
         />
       )}
 
