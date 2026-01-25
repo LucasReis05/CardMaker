@@ -36,7 +36,7 @@ type AppActions =
   | { type: "SALVAR_BARALHO" }
   | { type: "SELECIONAR_ELEMENTO"; id: number }
   | { type: "ATUALIZAR_COR"; cor: string }
-  | { type: "NOVA_CARTA" }
+  | { type: "NOVA_CARTA"; nome: string | null }
   | { type: "EDITAR_CARTA"; carta: Cartas }
   | { type: "SALVAR_CARTA"; nome: string }
   | { type: "APAGAR_CARTA" }
@@ -165,6 +165,7 @@ const reducer = (state: AppState, action: AppActions): AppState => {
       const original = state.cartasSalvas[indice];
       const copia: Cartas = {
         id: Date.now(),
+        nome: original.nome + " (Cópia)",
         dados: [...original.dados],
         cor: original.cor,
       };
@@ -215,8 +216,8 @@ function App() {
   const atualizarCor = (cor: string) => {
     dispatch({ type: "ATUALIZAR_COR", cor });
   };
-  const novaCarta = () => {
-    dispatch({ type: "NOVA_CARTA" });
+  const novaCarta = (nome: string | null) => {
+    dispatch({ type: "NOVA_CARTA", nome });
   };
 
   const editarCarta = (carta: Cartas) => {
@@ -229,8 +230,8 @@ function App() {
   const modificarElemento = (id: number, chave: string, valor: string | number) => {
     dispatch({ type: "MODIFICAR_ELEMENTO", id, chave, valor });
   }
-  const salvarCarta = (nome: string) => {
-    dispatch({ type: "SALVAR_CARTA", nome });
+  const salvarCarta = (nome: string | null) => {
+    dispatch({ type: "SALVAR_CARTA", nome: nome || "" });
   };
   const duplicarCarta = () => {
     dispatch({ type: "DUPLICAR_CARTA" });

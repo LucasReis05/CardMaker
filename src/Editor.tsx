@@ -13,7 +13,7 @@ export type EditorProps = {
     onSelecionarElemento: (id: number) => void;
     onAdicionarElemento: (tipo: 'texto' | 'imagem') => void;
     onModificarElemento: (id: number, chave: string, valor: string | number) => void;
-    onSalvarCarta: () => void;
+    onSalvarCarta: (nome: string | null) => void;
     onApagarCarta: () => void;
     onDuplicarCarta: () => void;
     cartaIdAtual:number | null;
@@ -29,8 +29,8 @@ export default function Editor(
     onAtualizarCor, onApagarElemento}:
     EditorProps) 
     {
-        const nomeCartaRef = useRef<HTMLInputElement>(null);
-        const onSalvarCartaComNome = () => { const nome = nomeCartaRef.current?.value || "Carta sem nome"; console.log("Nome da carta:", nome);
+        const nomeCartaRef = useRef<HTMLInputElement | null>(null);
+        const onSalvarCartaComNome = () => { const nome = nomeCartaRef.current?.value || null; console.log("Nome da carta:", nome);
         onSalvarCarta(nome); };
 
 
@@ -39,8 +39,6 @@ export default function Editor(
             <div className="editor">
                 <h2>Editor de Cartas</h2>
                 <button className="btn-acao voltar" onClick={()=>onDefineTela("mesa")}>Voltar</button>
-
-                <input type="text" placeholder="Nome da carta" ref={nomeCartaRef} className="input-nome-carta"/>
             
                 <div className="editorCentral">
                     <EditorOpcoes cartaId = {cartaIdAtual} salvarCarta={onSalvarCartaComNome} apagarCarta={onApagarCarta} duplicarCarta={onDuplicarCarta}/>
@@ -55,6 +53,7 @@ export default function Editor(
                     onApagarElemento={onApagarElemento}
                     cor={corCarta}
                     onAtualizarCor={onAtualizarCor}
+                    nomecarta={nomeCartaRef as React.RefObject<HTMLInputElement>}
                     />
                     
                 </div>

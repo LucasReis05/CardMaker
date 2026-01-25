@@ -11,10 +11,11 @@ type EditorPanelProps = {
   onApagarElemento: (id: number) => void;
   cor: string;
   onAtualizarCor: (cor: string) => void;
+  nomecarta: React.RefObject<HTMLInputElement>;
 }
 
 
-export default function EditorPanel({ elementoAtivo, onAtualizaElemento, onAddElemento, onApagarElemento, cor, onAtualizarCor}: EditorPanelProps) {
+export default function EditorPanel({ elementoAtivo, onAtualizaElemento, onAddElemento, onApagarElemento, cor, onAtualizarCor, nomecarta}: EditorPanelProps) {
   const [menuAberto, defineMenuAberto] = useState(false);
   
   const alterarElemento = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => 
@@ -48,6 +49,7 @@ export default function EditorPanel({ elementoAtivo, onAtualizaElemento, onAddEl
           <div style={{display: 'flex', flexDirection: 'row', gap: ' 10px' }}>
           <p>Cor da Carta:</p> 
           <input style={{display: 'inline'}} type="color" name="corCarta" value={cor} onChange={e => onAtualizarCor(e.target.value)}/>
+          <input type="text" placeholder="Nome da carta" ref={nomecarta} className="input-nome-carta"/>
           </div>
          
         </div>

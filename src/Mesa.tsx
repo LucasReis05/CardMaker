@@ -4,7 +4,7 @@ import Carta from './Componentes/Carta.tsx';
 
 type MesaProps = {
     cartasSalvas: Cartas[];
-    onNovaCarta: () => void;
+    onNovaCarta: (nome: string | null) => void;
     onEditarCarta: (carta: Cartas) => void;
     onVoltarMenu: () => void;
     onSalvarBaralho: () => void;
@@ -40,7 +40,7 @@ export default function Mesa({cartasSalvas, onNovaCarta, onEditarCarta, onVoltar
 
                 ))}
 
-                <div className="cartaInicial novaCarta" onClick={onNovaCarta}>
+                <div className="cartaInicial novaCarta" onClick={() => onNovaCarta(null)}>
                     <div className="cartaMiniatura">
                         <div className="cartaPlaceholder">+</div>
                     </div>
