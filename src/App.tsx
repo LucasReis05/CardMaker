@@ -297,7 +297,6 @@ function App() {
           baralhos={state.baralhosSalvos}
           onCriarBaralho={criarBaralho}
           onAbrirBaralho={abrirBaralho}
-          onApagarBaralho={apagarBaralho}
         />
       )}
 
