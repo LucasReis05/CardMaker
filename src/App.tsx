@@ -1,5 +1,5 @@
 import "./App.css";
-import { useReducer } from "react";
+import { useReducer, useEffect } from "react";
 import BaralhoTela from "./BaralhoTela.tsx";
 import Mesa from "./Mesa.tsx";
 import Editor from "./Editor.tsx";
@@ -52,10 +52,27 @@ type AppActions =
     }
   | { type: "APAGAR_ELEMENTO"; id: number };
 
+const STORAGE_KEY = "meu-tcg-baralhos";
+const carregarBaralhos = (): Baralho[] => {
+   const dados = localStorage.getItem(STORAGE_KEY);
+    if (dados) {
+      return JSON.parse(dados) as Baralho[];
+    } else {
+      return [];
+  }
+};
+const salvarBaralhos = (baralhos: Baralho[]) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(baralhos));
+  } catch (erro){
+    console.error("Erro ao salvar baralhos no localStorage:", erro);
+  }
+};
+
 const estadoInicial: AppState = {
   tela: "baralho",
   baralhoAtual: null,
-  baralhosSalvos: [],
+  baralhosSalvos: carregarBaralhos(),
   cartasSalvas: [],
   corAtual: "#ffffff",
   cartaIdAtual: null,
@@ -207,12 +224,17 @@ const reducer = (state: AppState, action: AppActions): AppState => {
       return state;
   }
 };
+
 function App() {
   const [state, dispatch] = useReducer(reducer, estadoInicial);
 
+  useEffect(() => {
+    salvarBaralhos(state.baralhosSalvos);
+  }, [state.baralhosSalvos]);
+
   const defineTela = (tela: "baralho" | "mesa" | "editor") => {
     dispatch({ type: "DEFINIR_TELA", tela });
-  }
+  };
 
   const criarBaralho = (nome: string) => {
     dispatch({ type: "CRIAR_BARALHO", nome });
@@ -263,8 +285,7 @@ function App() {
 
   const apagarElemento = (id: number) => {
     dispatch({ type: "APAGAR_ELEMENTO", id });
-  };
-
+};
   return (
     <div className="app">
       <header className="header">
