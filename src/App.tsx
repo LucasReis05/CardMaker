@@ -35,6 +35,7 @@ type AppActions =
   | { type: "CRIAR_BARALHO"; nome: string }
   | { type: "ABRIR_BARALHO"; baralho: Baralho }
   | { type: "SALVAR_BARALHO" }
+  | { type: "APAGAR_BARALHO"; id: number }
   | { type: "SELECIONAR_ELEMENTO"; id: number }
   | { type: "ATUALIZAR_COR"; cor: string }
   | { type: "NOVA_CARTA"; nome: string}
@@ -97,6 +98,18 @@ const reducer = (state: AppState, action: AppActions): AppState => {
         baralhosSalvos: state.baralhosSalvos.map(item =>
           item.id === state.baralhoAtual!.id ? baralhoAtualizado : item
         ),
+      };
+    }
+    case "APAGAR_BARALHO": {
+      const baralhosRestantes = state.baralhosSalvos.filter(
+        (b) => b.id !== action.id
+      );
+      return {
+        ...state,
+        baralhosSalvos: baralhosRestantes,
+        baralhoAtual: null,
+        cartasSalvas: [],
+        tela: "baralho",
       };
     }
     case "SELECIONAR_ELEMENTO":
@@ -212,6 +225,9 @@ function App() {
   const salvarBaralho = () => {
     dispatch({ type: "SALVAR_BARALHO" });
   };
+  const apagarBaralho = (id: number) => {
+    dispatch({ type: "APAGAR_BARALHO", id });
+  };
 
   const selecionarElemento = (id: number) => {
     dispatch({ type: "SELECIONAR_ELEMENTO", id });
@@ -260,6 +276,7 @@ function App() {
           baralhos={state.baralhosSalvos}
           onCriarBaralho={criarBaralho}
           onAbrirBaralho={abrirBaralho}
+          onApagarBaralho={apagarBaralho}
         />
       )}
 

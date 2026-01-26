@@ -5,9 +5,10 @@ type BaralhoProps = {
   baralhos: Baralho[];
   onCriarBaralho: (nome: string) => void;
   onAbrirBaralho: (b: Baralho) => void;
+  onApagarBaralho: (id: number) => void;
 }
 
-export default function BaralhoTela({ baralhos, onCriarBaralho, onAbrirBaralho }: BaralhoProps) {
+export default function BaralhoTela({ baralhos, onCriarBaralho, onAbrirBaralho, onApagarBaralho }: BaralhoProps) {
   const [nomeDigitado, setNomeDigitado] = useState("");
 
   const confirmarCriacao = () => {
@@ -48,6 +49,15 @@ export default function BaralhoTela({ baralhos, onCriarBaralho, onAbrirBaralho }
           >
             <p>{b.nome}</p>
             <small>{b.cartas.length} cartas</small>
+
+          <button
+            className="btn-apagar-baralho"
+            onClick={(e) => {
+              e.stopPropagation(); // 🚨 impede abrir o baralho
+              onApagarBaralho(b.id);
+            }}
+          >🗑️</button>
+          
           </div>
         ))}
       </div>
