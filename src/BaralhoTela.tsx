@@ -5,7 +5,6 @@ type BaralhoProps = {
   baralhos: Baralho[];
   onCriarBaralho: (nome: string) => void;
   onAbrirBaralho: (b: Baralho) => void;
-  onApagarBaralho: (id: number) => void;
 }
 
 export default function BaralhoTela({ baralhos, onCriarBaralho, onAbrirBaralho}: BaralhoProps) {
