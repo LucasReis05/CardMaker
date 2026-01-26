@@ -8,15 +8,18 @@ type MesaProps = {
     onEditarCarta: (carta: Cartas) => void;
     onVoltarMenu: () => void;
     onSalvarBaralho: () => void;
+    onApagarBaralho: (id: number) => void;
     baralhoAtual: Baralho | null;
 }
 
-export default function Mesa({cartasSalvas, onNovaCarta, onEditarCarta, onVoltarMenu, onSalvarBaralho, baralhoAtual}: MesaProps) {
+export default function Mesa({cartasSalvas, onNovaCarta, onEditarCarta, onVoltarMenu, onSalvarBaralho, onApagarBaralho, baralhoAtual}: MesaProps) {
     return (    
         <div className="mesa">
         <div style={{display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px'}}>
             <button className='btn-acao voltar' onClick={onVoltarMenu}>Voltar</button>
-            <button className='btn-acao salvar' onClick={onSalvarBaralho}>Salvar</button>
+            <button className='btn-acao salvar' onClick={onSalvarBaralho}>Salvar Baralho</button>
+             {baralhoAtual && (<button className='btn-acao apagar' onClick={() => onApagarBaralho(baralhoAtual.id)}>Apagar Baralho</button>
+    )}
         </div>
         <div>
             <h2> {baralhoAtual?.nome}</h2>
