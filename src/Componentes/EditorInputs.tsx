@@ -16,7 +16,7 @@ export default function EditorInputs({elemento, onAlterarElemento, onApagarEleme
             <input type="text" name="conteudo" value={elemento.conteudo} onChange={onAlterarElemento} />
 
             <label >Posição Horizontal</label>
-            <input type="range" name="posicaoHorizontal" min={-25} max={400} value={elemento.posicaoHorizontal} onChange={onAlterarElemento} />
+            <input type="range" name="posicaoHorizontal" min={-25} max={380} value={elemento.posicaoHorizontal} onChange={onAlterarElemento} />
 
             <label >Posição Vertical</label>
             <input type="range" name="posicaoVertical" min={-40} max={550} value={elemento.posicaoVertical} onChange={onAlterarElemento} />
